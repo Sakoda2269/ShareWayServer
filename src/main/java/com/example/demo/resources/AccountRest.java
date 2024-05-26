@@ -54,7 +54,6 @@ public class AccountRest {
 			@FormParam("introduction") String newIntro) {
 		accountService.authorizationCheck(accountId);
 		accountService.changeAccountInfo(accountId, newName, newIntro);
-		
 	}
 	
 	@PUT
