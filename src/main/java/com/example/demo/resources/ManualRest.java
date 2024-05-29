@@ -19,6 +19,7 @@ import com.example.demo.service.ManualService.ResponseManual;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -66,6 +67,19 @@ public class ManualRest {
 		}
 		accountService.authorizationCheck(accountId);
 		manualService.createManual(accountId, manual, imageMap);
+	}
+	
+	@Path("{manual_id}/thumbnail")
+	@PUT
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public void changeManualThumbnail(@PathParam("account_id") String accountId, @PathParam("manual_id") String manualId,
+			@FormDataParam("image")FormDataBodyPart image) {
+		accountService.authorizationCheck(accountId);
+		try {
+			manualService.changeThumbnail(accountId, manualId, image.getContent().readAllBytes());
+		} catch (IOException e) {
+			throw new BadRequest("invalid image data");
+		}
 	}
 	
 	@GET

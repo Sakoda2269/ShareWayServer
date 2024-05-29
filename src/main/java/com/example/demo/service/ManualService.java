@@ -49,6 +49,14 @@ public class ManualService {
 		}
 	}
 	
+	public void changeThumbnail(String accountId, String manualId, byte[] image) {
+		Manual manual = manualRepository.findById(manualId).orElseThrow(
+			() -> new NotFound("not found")	
+			);
+		manual.setThumbnail(image);
+		manualRepository.save(manual);
+	}
+	
 	public Map<String, ResponseManual> getAllManuals(String accountId){
 		Map<String, ResponseManual> response = new HashMap<>();
 		Account account = accountService.getAccountById(accountId);
@@ -64,7 +72,7 @@ public class ManualService {
 					steps.add(new RequestStep(step.getStepNum(), step.getTitle(), step.getDetail()));
 				}
 			}
-			ResponseManual res = new ResponseManual(accountId, account.getAccountName(), manual.getTitle(), steps);
+			ResponseManual res = new ResponseManual(accountId, account.getAccountName(), manual.getTitle(), steps, manual.getThumbnail());
 			response.put(manual.getManualId(), res);
 		}
 		
@@ -83,11 +91,11 @@ public class ManualService {
 				steps.add(new RequestStep(step.getStepNum(), step.getTitle(), step.getDetail()));
 			}
 		}
-		return new ResponseManual(accountId, account.getAccountName(), manual.getTitle(), steps);
+		return new ResponseManual(accountId, account.getAccountName(), manual.getTitle(), steps, manual.getThumbnail());
 	}
 
 	public record RequestManual(String title, List<RequestStep> steps) {};
 	public record RequestStep(Integer stepNum, String title, String detail) {};
-	public record ResponseManual(String accountId, String accountName, String title, List<RequestStep> steps) {};
+	public record ResponseManual(String accountId, String accountName, String title, List<RequestStep> steps, byte[] thumbnail) {};
 	
 }

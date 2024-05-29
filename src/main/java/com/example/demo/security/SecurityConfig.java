@@ -90,6 +90,7 @@ public class SecurityConfig {
 					.requestMatchers(HttpMethod.GET, "/accounts/{account_id}/manuals").permitAll()
 					.requestMatchers(HttpMethod.POST, "/accounts/{account_id}/manuals").authenticated()
 					.requestMatchers(HttpMethod.PUT, "/accounts/{account_id}/icon").authenticated()
+					.requestMatchers(HttpMethod.PUT, "/accounts/{account_id}/manuals/{manual_id}/thumbnail").authenticated()
 //					.requestMatchers(HttpMethod.PUT, "accounts/**").authenticated()
 			)
 			.csrf(csrf -> csrf
